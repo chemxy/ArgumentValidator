@@ -53,17 +53,18 @@ public class BoolExpCalculator {
         } else {
             a =  symbolStack.pop();
         }
-        Boolean r = null;
+
+        Boolean result = null;
         if (token.equals("|")) {
-            r = a || b;
+            result = a || b;
         } else if (token.equals("&")) {
-            r = a && b;
+            result = a && b;
         } else if (token.equals(">")) {
-            r = Operator.imply(a , b);
+            result = Operator.imply(a , b);
         } else {
             throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
         }
-        symbolStack.push(r);
+        symbolStack.push(result);
     }
 
     public boolean calculate(String expression) {
@@ -77,13 +78,11 @@ public class BoolExpCalculator {
             //Debugger.log("token: " + token);
             if (token.equals("T")){
                 //Debugger.log("parse token to true");
-                Boolean value = Boolean.parseBoolean("true");
-                symbolStack.push(value);
+                symbolStack.push(Boolean.parseBoolean("true"));
             }
             else if(token.equals("F")) {
                 //Debugger.log("parse token to false");
-                Boolean value = Boolean.parseBoolean("false");
-                symbolStack.push(value);
+                symbolStack.push(Boolean.parseBoolean("false"));
             }
             else if (isOperator(token)) {
                 //Debugger.log("token is operator");
@@ -91,9 +90,7 @@ public class BoolExpCalculator {
                     operatorStack.push(token);
                 } else {
                     while (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
-                        String toProcess = operatorStack.peek();
-                        operatorStack.pop();
-                        processOperator(toProcess);
+                        processOperator(operatorStack.pop());
                     }
                     operatorStack.push(token);
                 }
@@ -101,9 +98,7 @@ public class BoolExpCalculator {
                 operatorStack.push(token);
             } else if (token.equals(")")) {
                 while (!operatorStack.empty() && isOperator(operatorStack.peek())) {
-                    String toProcess = operatorStack.peek();
-                    operatorStack.pop();
-                    processOperator(toProcess);
+                    processOperator(operatorStack.pop());
                 }
                 if (!operatorStack.empty() && operatorStack.peek().equals("(")) {
                     operatorStack.pop();
@@ -116,14 +111,11 @@ public class BoolExpCalculator {
 
         // Empty out the operator stack at the end of the input
         while (!operatorStack.empty() && isOperator(operatorStack.peek())) {
-            String toProcess = operatorStack.peek();
-            operatorStack.pop();
-            processOperator(toProcess);
+            processOperator(operatorStack.pop());
         }
-        // Print the result if no error has been seen.
 
-        Boolean result = symbolStack.peek();
-        symbolStack.pop();
+        Boolean result = symbolStack.pop();
+
         if (!operatorStack.empty() || !symbolStack.empty()) {
             throw new RuntimeException("Expression error.");
         } else {
