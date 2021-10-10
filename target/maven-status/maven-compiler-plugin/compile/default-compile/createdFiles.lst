@@ -1,0 +1,10 @@
+argVal\model\operation\Operation.class
+argVal\model\operation\Operation$OperationType.class
+argVal\model\calculator\BoolExpCalculator.class
+argVal\model\Expression.class
+argVal\model\Symbol.class
+argVal\model\BoolExpression.class
+argVal\model\Conclusion.class
+argVal\model\Premise.class
+argVal\logger\Debugger.class
+argVal\model\Argument.class
