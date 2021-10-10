@@ -6,7 +6,7 @@ public class Argument {
 
     private final ArrayList<Expression> premiseList;
     private Expression conclusion;
-    private final Set<Symbol> symbolSet;
+    private final Set<String> symbolSet;
 
     public Argument() {
         this.premiseList = new ArrayList<>();
@@ -28,13 +28,6 @@ public class Argument {
 
     public void setConclusion(Expression c) {
         this.conclusion = c;
-    }
-
-    public void assign(Symbol symbol, boolean value) {
-        for (Expression p : this.premiseList)
-            p.assign(symbol, value);
-
-        this.conclusion.assign(symbol, value);
     }
 
     public void assign(String symbol, boolean value) {
@@ -59,7 +52,7 @@ public class Argument {
         this.symbolSet.addAll(conclusion.getSymbolList());
     }
 
-    public Set<Symbol> getSymbolSet() {
+    public Set<String> getSymbolSet() {
         getAllSymbols();
         return symbolSet;
     }
@@ -84,8 +77,8 @@ public class Argument {
     public void printTruthTable() {
         getAllSymbols();
         List<String> symbolList = new ArrayList<>();
-        for (Symbol sb : symbolSet)
-            symbolList.add(sb.getName());
+        for (String s : symbolSet)
+            symbolList.add(s);
 
 
         char[] symbolCharArray = String.join("", symbolList).toCharArray();

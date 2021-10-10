@@ -27,15 +27,15 @@ public class ArgValidatorTest {
         System.out.println("validate argument: " + exp.getAssignedExpression());
         System.out.println(exp.validate());
 
-        exp.assign(new Symbol("B"), false);
+        exp.assign("B", false);
         System.out.println("validate argument: " + exp.getAssignedExpression());
         System.out.println(exp.validate());
 
-        exp.assign(new Symbol("A"), true);
+        exp.assign("A", true);
         System.out.println("validate argument: " + exp.getAssignedExpression());
         System.out.println(exp.validate());
 
-        exp.assign(new Symbol("C"), true);
+        exp.assign("C", true);
         System.out.println("validate argument: " + exp.getAssignedExpression());
         System.out.println(exp.validate());
 

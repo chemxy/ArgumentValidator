@@ -2,10 +2,11 @@ package argVal.model;
 
 import java.util.Objects;
 
+@Deprecated
 public class Symbol {
 
-    private String name;
-    private Boolean value;
+    private final String name;
+    private final Boolean value;
 
     public Symbol(String name, Boolean value) {
         super();

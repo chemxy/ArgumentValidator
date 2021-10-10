@@ -9,7 +9,7 @@ public class Expression {
 
     private final String expression;
     private String assignedExpression;
-    private final Set<Symbol> symbolList;
+    private final Set<String> symbolList;
 
 
     public Expression(String expression) {
@@ -21,7 +21,7 @@ public class Expression {
 
         for (char c : this.expression.toCharArray())
             if (Character.isLetter(c))  // if the char is a symbol
-                symbolList.add(new Symbol(c)); // add the symbol to the set
+                symbolList.add(Character.toString(c)); // add the symbol to the set
     }
 
     public String getExpression() {
@@ -32,12 +32,8 @@ public class Expression {
         return this.assignedExpression;
     }
 
-    public Set<Symbol> getSymbolList() {
+    public Set<String> getSymbolList() {
         return symbolList;
-    }
-
-    public void assign(Symbol symbol, boolean value) {
-        this.assignedExpression = this.assignedExpression.replaceAll(symbol.getName(), value ? "T" : "F");
     }
 
     public void assign(String symbol, boolean value) {

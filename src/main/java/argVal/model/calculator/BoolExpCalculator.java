@@ -1,6 +1,6 @@
 package argVal.model.calculator;
 
-import argVal.model.Operator;
+import argVal.model.Operation;
 
 import java.util.Stack;
 
@@ -66,7 +66,7 @@ public class BoolExpCalculator {
                 symbolStack.push(a && b);
                 break;
             case ">":
-                symbolStack.push(Operator.imply(a, b));
+                symbolStack.push(Operation.imply(a, b));
                 break;
             default:
                 throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));

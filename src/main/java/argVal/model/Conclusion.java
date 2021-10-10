@@ -1,5 +1,6 @@
 package argVal.model;
 
+@Deprecated
 public class Conclusion extends Expression{
 
 
