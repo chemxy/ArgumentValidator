@@ -1,8 +1,8 @@
+argVal\model\Operation.class
 argVal\model\calculator\BoolExpCalculator.class
-argVal\model\Operator.class
 argVal\model\Expression.class
 argVal\model\Symbol.class
-argVal\model\Operator$OperatorType.class
+argVal\model\Operation$OperatorType.class
 argVal\model\BoolExpression.class
 argVal\model\Conclusion.class
 argVal\model\Premise.class

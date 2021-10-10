@@ -94,50 +94,39 @@ public class BoolExpCalculator {
             }
             else if (isOperator(token)) {
                 //Debugger.log("token is operator");
-                if (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
-
-                    while (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
-
+                if (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek()))
+                    while (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek()))
                         calculateToken(operatorStack.pop());
-                    }
 
-                }
                 operatorStack.push(token);
+
             } else if (token.equals("(")) {
 
                 operatorStack.push(token);
 
             } else if (token.equals(")")) {
 
-                while (!operatorStack.empty() && isOperator(operatorStack.peek())) {
-
+                while (!operatorStack.empty() && isOperator(operatorStack.peek()))
                     calculateToken(operatorStack.pop());
-                }
 
-                if (!operatorStack.empty() && operatorStack.peek().equals("(")) {
-
+                if (!operatorStack.empty() && operatorStack.peek().equals("("))
                     operatorStack.pop();
-                } else {
-
+                else
                     throw new RuntimeException("Error: Unbalanced parenthesis. Check the expression.");
-                }
             }
 
         }
 
         // Empty out the operator stack at the end of the input
-        while (!operatorStack.empty() && isOperator(operatorStack.peek())) {
-
+        while (!operatorStack.empty() && isOperator(operatorStack.peek()))
             calculateToken(operatorStack.pop());
-        }
 
         Boolean result = symbolStack.pop();
 
         if (!operatorStack.empty() || !symbolStack.empty())
             throw new RuntimeException("Expression error.");
-        else
-           return result;
 
+        return result;
     }
 
 }
