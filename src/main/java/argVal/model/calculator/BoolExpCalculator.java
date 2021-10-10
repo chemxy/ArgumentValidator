@@ -13,6 +13,7 @@ public class BoolExpCalculator {
     private Stack<Boolean> symbolStack;
 
     public BoolExpCalculator() {
+
         this.operatorStack = new Stack<>();
         this.symbolStack = new Stack<>();
     }
@@ -23,46 +24,52 @@ public class BoolExpCalculator {
     }
 
     private int getPrecedence(String s) {
-        if (s.equals("&") || s.equals("|") || s.equals(">")) {
+
+        if (s.equals("&") || s.equals("|") || s.equals(">"))
             return 1;
-        }
-        if (s.equals("~")) {
+
+        if (s.equals("~"))
             return 2;
-        }
+
         return 0;
     }
 
-    private void processOperator(String token) {
+    private void calculateToken(String token) {
 
-        if(token.equals("~")){
-            if (symbolStack.empty()) {
+        if(token.equals("~")){ // if the operator is NOT. do the calculation
+            if (symbolStack.empty())
                 throw new RuntimeException("Error: Invalid expression. Check the expression.");
-            }
+
             symbolStack.push(!symbolStack.pop());
+
             return;
         }
 
+        // get two values from stack
         Boolean a, b;
-        if (symbolStack.empty()) {
-           throw new RuntimeException("Error: Invalid expression. Check the expression.");
-        } else {
-            b =  symbolStack.pop();
-        }
-        if (symbolStack.empty()) {
+        if (symbolStack.empty())
             throw new RuntimeException("Error: Invalid expression. Check the expression.");
-        } else {
-            a =  symbolStack.pop();
-        }
+        else
+            a = symbolStack.pop();
 
-        if (token.equals("|")) {
+        if (symbolStack.empty())
+            throw new RuntimeException("Error: Invalid expression. Check the expression.");
+        else
+            b = symbolStack.pop();
+
+        // get an operator from stack and do the calculation
+        if (token.equals("|"))
             symbolStack.push(a || b);
-        } else if (token.equals("&")) {
+
+        else if (token.equals("&"))
             symbolStack.push(a && b);
-        } else if (token.equals(">")) {
-            symbolStack.push(Operator.imply(a , b));
-        } else {
+
+        else if (token.equals(">"))
+            symbolStack.push(Operator.imply(a, b));
+
+        else
             throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
-        }
+
 
     }
 
@@ -86,23 +93,35 @@ public class BoolExpCalculator {
             else if (isOperator(token)) {
                 //Debugger.log("token is operator");
                 if (operatorStack.empty() || getPrecedence(token) > getPrecedence(operatorStack.peek())) {
+
                     operatorStack.push(token);
+
                 } else {
+
                     while (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
-                        processOperator(operatorStack.pop());
+
+                        calculateToken(operatorStack.pop());
                     }
+
                     operatorStack.push(token);
                 }
             } else if (token.equals("(")) {
+
                 operatorStack.push(token);
+
             } else if (token.equals(")")) {
+
                 while (!operatorStack.empty() && isOperator(operatorStack.peek())) {
-                    processOperator(operatorStack.pop());
+
+                    calculateToken(operatorStack.pop());
                 }
+
                 if (!operatorStack.empty() && operatorStack.peek().equals("(")) {
+
                     operatorStack.pop();
                 } else {
-                    throw new RuntimeException("unbalanced parenthesis.");
+
+                    throw new RuntimeException("Error: Unbalanced parenthesis. Check the expression.");
                 }
             }
 
@@ -110,16 +129,16 @@ public class BoolExpCalculator {
 
         // Empty out the operator stack at the end of the input
         while (!operatorStack.empty() && isOperator(operatorStack.peek())) {
-            processOperator(operatorStack.pop());
+
+            calculateToken(operatorStack.pop());
         }
 
         Boolean result = symbolStack.pop();
 
-        if (!operatorStack.empty() || !symbolStack.empty()) {
+        if (!operatorStack.empty() || !symbolStack.empty())
             throw new RuntimeException("Expression error.");
-        } else {
+        else
            return result;
-        }
 
     }
 
