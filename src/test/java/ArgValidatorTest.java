@@ -6,7 +6,6 @@ import org.junit.Test;
 
 public class ArgValidatorTest {
 
-
     //    @Test
     public void testCal() {
 
@@ -90,7 +89,7 @@ public class ArgValidatorTest {
         System.out.println("\n\n===in test arg===\n\n");
     }
 
-//    @Test
+    //    @Test
     public void testAss5Q4() {
         System.out.println("===in test arg===\n\n");
         Argument arg = new Argument();

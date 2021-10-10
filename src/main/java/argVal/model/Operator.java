@@ -1,8 +1,5 @@
 package argVal.model;
 
-import argVal.model.Premise;
-import argVal.model.Symbol;
-
 public class Operator {
 
     protected enum OperatorType{

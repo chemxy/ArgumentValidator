@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 
 public class Expression {
 
-    private String expression;
+    private final String expression;
     private String assignedExpression;
-    private Set<Symbol> symbolList;
+    private final Set<Symbol> symbolList;
 
 
     public Expression(String expression) {

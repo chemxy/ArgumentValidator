@@ -4,9 +4,9 @@ import java.util.*;
 
 public class Argument {
 
-    private ArrayList<Expression> premiseList;
+    private final ArrayList<Expression> premiseList;
     private Expression conclusion;
-    private Set<Symbol> symbolSet;
+    private final Set<Symbol> symbolSet;
 
     public Argument() {
         this.premiseList = new ArrayList<>();
@@ -31,16 +31,16 @@ public class Argument {
     }
 
     public void assign(Symbol symbol, boolean value) {
-        for (Expression p : this.premiseList) {
+        for (Expression p : this.premiseList)
             p.assign(symbol, value);
-        }
+
         this.conclusion.assign(symbol, value);
     }
 
     public void assign(String symbol, boolean value) {
-        for (Expression p : this.premiseList) {
+        for (Expression p : this.premiseList)
             p.assign(symbol, value);
-        }
+
         this.conclusion.assign(symbol, value);
     }
 
@@ -53,9 +53,9 @@ public class Argument {
     }
 
     public void getAllSymbols() {
-        for (Expression p : this.premiseList) {
+        for (Expression p : this.premiseList)
             this.symbolSet.addAll(p.getSymbolList());
-        }
+
         this.symbolSet.addAll(conclusion.getSymbolList());
     }
 
@@ -65,17 +65,17 @@ public class Argument {
     }
 
     public void restore() {
-        for (Expression p : this.premiseList) {
+        for (Expression p : this.premiseList)
             p.restore();
-        }
+
         this.conclusion.restore();
     }
 
     public void calculate() {
 
-        for (Expression p : this.premiseList) {
+        for (Expression p : this.premiseList)
             System.out.print(p.calculate() + ", ");
-        }
+
 
         System.out.println("| " + this.conclusion.calculate());
     }
@@ -84,18 +84,18 @@ public class Argument {
     public void printTruthTable() {
         getAllSymbols();
         List<String> symbolList = new ArrayList<>();
-        for(Symbol sb : symbolSet){
+        for (Symbol sb : symbolSet)
             symbolList.add(sb.getName());
-        }
 
-        char symbolCharArray[] = String.join("", symbolList).toCharArray();
+
+        char[] symbolCharArray = String.join("", symbolList).toCharArray();
         Arrays.sort(symbolCharArray);
 
         symbolList.clear();
 
-        for(char c : symbolCharArray){
+        for (char c : symbolCharArray)
             symbolList.add(Character.toString(c));
-        }
+
 
         System.out.println(symbolList);
 
@@ -181,8 +181,7 @@ public class Argument {
             assign(symbolList.get(1), false);
             assign(symbolList.get(2), false);
             calculate();
-        }
-        else if (symbolList.size() == 4) {
+        } else if (symbolList.size() == 4) {
 
             restore();
             System.out.print("line 1: ");
@@ -321,7 +320,7 @@ public class Argument {
         if (!option) {
 
             for (Expression p : this.premiseList) {
-                sb.append(p.getExpression() + "\n");
+                sb.append(p.getExpression()).append("\n");
             }
 
             sb.append("-------------------------------------\n");
@@ -330,7 +329,7 @@ public class Argument {
 
         } else {
             for (Expression p : this.premiseList) {
-                sb.append(p.getAssignedExpression() + "\n");
+                sb.append(p.getAssignedExpression()).append("\n");
             }
 
             sb.append("-------------------------------------\n");

@@ -9,8 +9,8 @@ import java.util.Stack;
  */
 public class BoolExpCalculator {
 
-    private Stack<String> operatorStack;
-    private Stack<Boolean> symbolStack;
+    private final Stack<String> operatorStack;
+    private final Stack<Boolean> symbolStack;
 
     public BoolExpCalculator() {
 
@@ -58,17 +58,19 @@ public class BoolExpCalculator {
             b = symbolStack.pop();
 
         // get an operator from stack and do the calculation
-        if (token.equals("|"))
-            symbolStack.push(a || b);
-
-        else if (token.equals("&"))
-            symbolStack.push(a && b);
-
-        else if (token.equals(">"))
-            symbolStack.push(Operator.imply(a, b));
-
-        else
-            throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
+        switch (token) {
+            case "|":
+                symbolStack.push(a || b);
+                break;
+            case "&":
+                symbolStack.push(a && b);
+                break;
+            case ">":
+                symbolStack.push(Operator.imply(a, b));
+                break;
+            default:
+                throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
+        }
 
 
     }
@@ -84,27 +86,23 @@ public class BoolExpCalculator {
             //Debugger.log("token: " + token);
             if (token.equals("T")){
                 //Debugger.log("parse token to true");
-                symbolStack.push(Boolean.parseBoolean("true"));
+                symbolStack.push(true); // push a TRUE value to stack
             }
             else if(token.equals("F")) {
                 //Debugger.log("parse token to false");
-                symbolStack.push(Boolean.parseBoolean("false"));
+                symbolStack.push(false); // push a FALSE value to stack
             }
             else if (isOperator(token)) {
                 //Debugger.log("token is operator");
-                if (operatorStack.empty() || getPrecedence(token) > getPrecedence(operatorStack.peek())) {
-
-                    operatorStack.push(token);
-
-                } else {
+                if (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
 
                     while (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
 
                         calculateToken(operatorStack.pop());
                     }
 
-                    operatorStack.push(token);
                 }
+                operatorStack.push(token);
             } else if (token.equals("(")) {
 
                 operatorStack.push(token);
