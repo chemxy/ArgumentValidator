@@ -11,7 +11,6 @@ public class Expression {
     private String assignedExpression;
     private final Set<String> symbolList;
 
-
     public Expression(String expression) {
 
         super();
@@ -19,7 +18,7 @@ public class Expression {
         this.assignedExpression = this.expression;
         this.symbolList = new HashSet<>();
 
-        for (char c : this.expression.toCharArray())
+        for (char c : this.expression.toCharArray()) // for each char in the expression string
             if (Character.isLetter(c))  // if the char is a symbol
                 symbolList.add(Character.toString(c)); // add the symbol to the set
     }
@@ -36,14 +35,27 @@ public class Expression {
         return symbolList;
     }
 
+    /**
+     * Assign a symbol with a truth value.
+     * @param symbol
+     * @param value
+     */
     public void assign(String symbol, boolean value) {
         this.assignedExpression = this.assignedExpression.replaceAll(symbol, value ? "T" : "F");
     }
 
+    /**
+     * Restore to the original expression.
+     */
     public void restore() {
         this.assignedExpression = this.expression;
     }
 
+    /**
+     * Determine if this is a valid expression.
+     * That is, check if all symbols are replaced with a truth value.
+     * @return
+     */
     public boolean validate() {
 
         Pattern r = Pattern.compile("[()TF>&~|]*");
@@ -53,11 +65,16 @@ public class Expression {
         return m.matches();
     }
 
+    /**
+     * Calculate the truthe value of the expression if the expression is valid.
+     * @return the truth value of the expression.
+     */
     public boolean calculate() {
-        if (validate()) {
+
+        if (validate()) // if this expression is a valid expression, do the calculation
             return new BoolExpression(this.assignedExpression).calculate();
-        }
-        throw new RuntimeException(String.format("Expression: %s is not validated", this.expression));
+
+        throw new RuntimeException(String.format("Expression: %s is not valid", this.expression));
     }
 
     @Override

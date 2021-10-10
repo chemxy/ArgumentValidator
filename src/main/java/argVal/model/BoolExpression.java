@@ -10,7 +10,6 @@ public class BoolExpression {
     public BoolExpression(String expression) {
 
         this.expression = expression.trim().replaceAll("\\s+", "").replaceAll("->", ">");
-
     }
 
     public String getExpression() {
@@ -22,9 +21,11 @@ public class BoolExpression {
     }
 
     public boolean calculate() {
+
         BoolExpCalculator calc = new BoolExpCalculator();
 
         this.value = calc.calculate(this.expression);
+
         return this.value;
     }
 
