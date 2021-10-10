@@ -54,17 +54,16 @@ public class BoolExpCalculator {
             a =  symbolStack.pop();
         }
 
-        Boolean result = null;
         if (token.equals("|")) {
-            result = a || b;
+            symbolStack.push(a || b);
         } else if (token.equals("&")) {
-            result = a && b;
+            symbolStack.push(a && b);
         } else if (token.equals(">")) {
-            result = Operator.imply(a , b);
+            symbolStack.push(Operator.imply(a , b));
         } else {
             throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
         }
-        symbolStack.push(result);
+
     }
 
     public boolean calculate(String expression) {
