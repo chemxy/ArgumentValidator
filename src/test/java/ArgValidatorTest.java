@@ -122,7 +122,7 @@ public class ArgValidatorTest {
         System.out.println("\n\n===in test arg===\n\n");
     }
 
-        @Test
+    @Test
     public void testAss5Q6() {
         System.out.println("===in test arg===\n\n");
 

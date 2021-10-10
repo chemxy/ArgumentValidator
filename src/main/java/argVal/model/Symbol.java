@@ -7,19 +7,22 @@ public class Symbol {
     private String name;
     private Boolean value;
 
-    public Symbol(String name) {
+    public Symbol(String name, Boolean value) {
+        super();
         this.name = name;
-        this.value = null;
+        this.value = value;
+    }
+
+    public Symbol(Boolean value) {
+        this(null, value);
+    }
+
+    public Symbol(String name) {
+        this(name, null);
     }
 
     public Symbol(Character name) {
-        this.name = name.toString();
-        this.value = null;
-    }
-
-    public Symbol(String name, Boolean value) {
-        this.name = name;
-        this.value = value;
+        this(name.toString(), null);
     }
 
     public String getName() {
@@ -45,6 +48,6 @@ public class Symbol {
 
     @Override
     public String toString() {
-      return getName();
+        return getName();
     }
 }

@@ -1,11 +1,11 @@
-package argVal.model.operation;
+package argVal.model;
 
 import argVal.model.Premise;
 import argVal.model.Symbol;
 
-public class Operation {
+public class Operator {
 
-    protected enum OperationType{
+    protected enum OperatorType{
         IMPLY,
         AND,
         OR,

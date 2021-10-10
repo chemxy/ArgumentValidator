@@ -1,6 +1,6 @@
 package argVal.model.calculator;
 
-import argVal.model.operation.Operation;
+import argVal.model.Operator;
 
 import java.util.Stack;
 
@@ -63,25 +63,21 @@ public class BoolExpCalculator {
         } else if (token.equals("&")) {
             r = a && b;
         } else if (token.equals("->") || token.equals(">")) {
-            r = Operation.imply(a , b);
+            r = Operator.imply(a , b);
         } else {
             throw new RuntimeException("Oprator error.");
         }
         valueStack.push(r);
     }
 
-    public boolean calculate(String input) {
+    public boolean calculate(String expression) {
 
         //Debugger.log("input: " + input);
 
-        String[] tokens = input.split(" ");
-
-        String inputTrimmed = input.trim().replaceAll("\\s+", "").replaceAll("->", ">");
-
         // Main loop - process all input tokens
 
-        for (int i = 0; i < inputTrimmed.length(); i++) {
-            String token = Character.toString(inputTrimmed.charAt(i));
+        for (int i = 0; i < expression.length(); i++) {
+            String token = Character.toString(expression.charAt(i));
 
             //Debugger.log("token: " + token);
             if (token.equals("T")){
