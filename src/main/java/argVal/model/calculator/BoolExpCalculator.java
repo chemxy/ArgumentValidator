@@ -10,11 +10,11 @@ import java.util.Stack;
 public class BoolExpCalculator {
 
     private Stack<String> operatorStack;
-    private Stack<Boolean> valueStack;
+    private Stack<Boolean> symbolStack;
 
     public BoolExpCalculator() {
         this.operatorStack = new Stack<>();
-        this.valueStack = new Stack<>();
+        this.symbolStack = new Stack<>();
     }
 
     private boolean isOperator(String s) {
@@ -33,41 +33,37 @@ public class BoolExpCalculator {
     }
 
     private void processOperator(String token) {
-        Boolean a, b;
+
         if(token.equals("~")){
-            if (valueStack.empty()) {
-                throw new RuntimeException("Expression error.");
-            } else {
-                b = valueStack.peek();
-                valueStack.pop();
+            if (symbolStack.empty()) {
+                throw new RuntimeException("Error: Invalid expression. Check the expression.");
             }
-            valueStack.push(!b);
+            symbolStack.push(!symbolStack.pop());
             return;
         }
 
-        if (valueStack.empty()) {
-           throw new RuntimeException("Expression error.");
+        Boolean a, b;
+        if (symbolStack.empty()) {
+           throw new RuntimeException("Error: Invalid expression. Check the expression.");
         } else {
-            b = valueStack.peek();
-            valueStack.pop();
+            b =  symbolStack.pop();
         }
-        if (valueStack.empty()) {
-            throw new RuntimeException("Expression error.");
+        if (symbolStack.empty()) {
+            throw new RuntimeException("Error: Invalid expression. Check the expression.");
         } else {
-            a = valueStack.peek();
-            valueStack.pop();
+            a =  symbolStack.pop();
         }
         Boolean r = null;
         if (token.equals("|")) {
             r = a || b;
         } else if (token.equals("&")) {
             r = a && b;
-        } else if (token.equals("->") || token.equals(">")) {
+        } else if (token.equals(">")) {
             r = Operator.imply(a , b);
         } else {
-            throw new RuntimeException("Oprator error.");
+            throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
         }
-        valueStack.push(r);
+        symbolStack.push(r);
     }
 
     public boolean calculate(String expression) {
@@ -75,7 +71,6 @@ public class BoolExpCalculator {
         //Debugger.log("input: " + input);
 
         // Main loop - process all input tokens
-
         for (int i = 0; i < expression.length(); i++) {
             String token = Character.toString(expression.charAt(i));
 
@@ -83,12 +78,12 @@ public class BoolExpCalculator {
             if (token.equals("T")){
                 //Debugger.log("parse token to true");
                 Boolean value = Boolean.parseBoolean("true");
-                valueStack.push(value);
+                symbolStack.push(value);
             }
             else if(token.equals("F")) {
                 //Debugger.log("parse token to false");
                 Boolean value = Boolean.parseBoolean("false");
-                valueStack.push(value);
+                symbolStack.push(value);
             }
             else if (isOperator(token)) {
                 //Debugger.log("token is operator");
@@ -127,9 +122,9 @@ public class BoolExpCalculator {
         }
         // Print the result if no error has been seen.
 
-        Boolean result = valueStack.peek();
-        valueStack.pop();
-        if (!operatorStack.empty() || !valueStack.empty()) {
+        Boolean result = symbolStack.peek();
+        symbolStack.pop();
+        if (!operatorStack.empty() || !symbolStack.empty()) {
             throw new RuntimeException("Expression error.");
         } else {
            return result;
