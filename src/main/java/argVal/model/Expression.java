@@ -13,22 +13,15 @@ public class Expression {
 
 
     public Expression(String expression) {
+
         super();
         this.expression = expression.trim().replaceAll("\\s+", "").replaceAll("->", ">").replaceAll("v", "|");
         this.assignedExpression = this.expression;
         this.symbolList = new HashSet<>();
 
-        for (char c : this.expression.toCharArray()) {
-
-            if (Character.isLetter(c)) {
-
-                Symbol symbol = new Symbol(c);
-
-                if (!symbolList.contains(symbol)) {
-                    symbolList.add(symbol);
-                }
-            }
-        }
+        for (char c : this.expression.toCharArray())
+            if (Character.isLetter(c))  // if the char is a symbol
+                symbolList.add(new Symbol(c)); // add the symbol to the set
     }
 
     public String getExpression() {

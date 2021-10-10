@@ -79,7 +79,7 @@ public class BoolExpCalculator {
 
         //Debugger.log("input: " + input);
 
-        // Main loop - process all input tokens
+        // Main loop - parse and calculate every token
         for (int i = 0; i < expression.length(); i++) {
             String token = Character.toString(expression.charAt(i));
 
