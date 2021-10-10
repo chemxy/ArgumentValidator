@@ -6,16 +6,15 @@ import org.junit.Test;
 
 public class ArgValidatorTest {
 
-    //    @Test
+//    @Test
     public void testCal() {
 
         //        String s = "~ ( T &  ~ T )";
-        String s = "  (T|F)-> (T&F ) ";
+        Expression exp = new Expression("  T -> ~T ");
 
-        System.out.println("Expression: " + s);
+        System.out.println("Expression: " + exp);
 
-        BoolExpCalculator calc = new BoolExpCalculator();
-        System.out.println("Result: " + calc.calculate(s));
+        System.out.println("Result: " + exp.calculate());
 
     }
 
@@ -127,9 +126,9 @@ public class ArgValidatorTest {
 
         Argument arg = new Argument();
 
-        arg.addPremise(new Expression("(M v E)->D"));
-        arg.addPremise(new Expression("~E->~M"));
-        arg.addPremise(new Expression("M->~E"));
+        arg.addPremise(new Expression("(M |  ~E) ->D"));
+        arg.addPremise(new Expression("~E -> ~M"));
+        arg.addPremise(new Expression("M -> ~E"));
         arg.setConclusion(new Expression("D"));
         arg.printArgument();
 

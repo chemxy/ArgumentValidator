@@ -1,5 +1,6 @@
 package argVal.model.calculator;
 
+import argVal.logger.Debugger;
 import argVal.model.Operation;
 
 import java.util.Stack;
@@ -28,7 +29,7 @@ public class BoolExpCalculator {
         if (s.equals("&") || s.equals("|") || s.equals(">"))
             return 1;
 
-        if (s.equals("~"))
+        else if (s.equals("~"))
             return 2;
 
         return 0;
@@ -36,68 +37,67 @@ public class BoolExpCalculator {
 
     private void calculateToken(String token) {
 
-        if(token.equals("~")){ // if the operator is NOT. do the calculation
+//        Debugger.log("in calculate token, token is: " + token);
+
+        if (token.equals("~")) { // if the operator is NOT. do the calculation
             if (symbolStack.empty())
                 throw new RuntimeException("Error: Invalid expression. Check the expression.");
 
             symbolStack.push(!symbolStack.pop());
 
-            return;
-        }
+        } else { //if the operatior is AND, OR and IMPLY, do the calculation
+            // get two values from stack
+            Boolean a, b;
+            if (symbolStack.empty())
+                throw new RuntimeException("Error: Invalid expression. Check the expression.");
+            else
+                b = symbolStack.pop();
 
-        // get two values from stack
-        Boolean a, b;
-        if (symbolStack.empty())
-            throw new RuntimeException("Error: Invalid expression. Check the expression.");
-        else
-            a = symbolStack.pop();
+            if (symbolStack.empty())
+                throw new RuntimeException("Error: Invalid expression. Check the expression.");
+            else
+                a = symbolStack.pop();
 
-        if (symbolStack.empty())
-            throw new RuntimeException("Error: Invalid expression. Check the expression.");
-        else
-            b = symbolStack.pop();
-
-        // get an operator from stack and do the calculation
-        switch (token) {
-            case "|":
-                symbolStack.push(a || b);
-                break;
-            case "&":
-                symbolStack.push(a && b);
-                break;
-            case ">":
-                symbolStack.push(Operation.imply(a, b));
-                break;
-            default:
-                throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
-        }
-
-
+            // do the calculation according to the operator
+            switch (token) {
+                case "|":
+                    symbolStack.push(a || b);
+                    break;
+                case "&":
+                    symbolStack.push(a && b);
+                    break;
+                case ">":
+                    symbolStack.push(Operation.imply(a, b));
+                    break;
+                default:
+                    throw new RuntimeException(String.format("Error: Invalid Operator: %s. Check the expression.", token));
+            } // end switch
+        } //  end else
     }
 
     public boolean calculate(String expression) {
 
-        //Debugger.log("input: " + input);
+//        Debugger.log("input: " + expression + ": ");
 
         // Main loop - parse and calculate every token
         for (int i = 0; i < expression.length(); i++) {
             String token = Character.toString(expression.charAt(i));
 
-            //Debugger.log("token: " + token);
+//            Debugger.log("token: " + token);
             if (token.equals("T")){
-                //Debugger.log("parse token to true");
+//                Debugger.log("parse token to true");
                 symbolStack.push(true); // push a TRUE value to stack
             }
             else if(token.equals("F")) {
-                //Debugger.log("parse token to false");
+//                Debugger.log("parse token to false");
                 symbolStack.push(false); // push a FALSE value to stack
             }
             else if (isOperator(token)) {
-                //Debugger.log("token is operator");
-                if (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek()))
+//                Debugger.log("token is operator");
+                if (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
                     while (!operatorStack.empty() && getPrecedence(token) <= getPrecedence(operatorStack.peek()))
                         calculateToken(operatorStack.pop());
-
+                }
                 operatorStack.push(token);
 
             } else if (token.equals("(")) {

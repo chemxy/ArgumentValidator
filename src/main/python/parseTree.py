@@ -1,27 +1,29 @@
-from pythonds.basic import Stack
-from pythonds.trees import BinaryTree
+# from pythonds.basic import Stack
+from binaryTree import BinaryTree
+from collections import deque
 
 """
 reference: https://runestone.academy/runestone/books/published/pythonds/Trees/ParseTree.html
 """
 
+
 def buildParseTree(fpexp):
     fplist = fpexp.split()
-    pStack = Stack()
+    pStack = deque()
     eTree = BinaryTree('')
-    pStack.push(eTree)
+    pStack.append(eTree)
     currentTree = eTree
 
     for i in fplist:
         if i == '(':
             currentTree.insertLeft('')
-            pStack.push(currentTree)
+            pStack.append(currentTree)
             currentTree = currentTree.getLeftChild()
 
         elif i in ['+', '-', '*', '/']:
             currentTree.setRootVal(i)
             currentTree.insertRight('')
-            pStack.push(currentTree)
+            pStack.append(currentTree)
             currentTree = currentTree.getRightChild()
 
         elif i == ')':
@@ -39,4 +41,4 @@ def buildParseTree(fpexp):
     return eTree
 
 pt = buildParseTree("( ( 10 + 5 ) * 3 )")
-pt.postorder()  #defined and explained in the next section
+pt.preorder()  #defined and explained in the next section

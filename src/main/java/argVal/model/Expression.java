@@ -1,5 +1,7 @@
 package argVal.model;
 
+import argVal.logger.Debugger;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -48,7 +50,9 @@ public class Expression {
      * Restore to the original expression.
      */
     public void restore() {
+//        Debugger.log(String.format("%s restored to %s", this.assignedExpression, this.expression));
         this.assignedExpression = this.expression;
+
     }
 
     /**

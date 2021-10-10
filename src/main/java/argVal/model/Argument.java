@@ -1,5 +1,7 @@
 package argVal.model;
 
+import argVal.logger.Debugger;
+
 import java.util.*;
 
 public class Argument {
@@ -89,8 +91,7 @@ public class Argument {
         for (char c : symbolCharArray)
             symbolList.add(Character.toString(c));
 
-
-        System.out.println(symbolList);
+//       Debugger.log(symbolList.toString());
 
         if (symbolList.size() == 2) {
             restore();
@@ -174,6 +175,7 @@ public class Argument {
             assign(symbolList.get(1), false);
             assign(symbolList.get(2), false);
             calculate();
+
         } else if (symbolList.size() == 4) {
 
             restore();
