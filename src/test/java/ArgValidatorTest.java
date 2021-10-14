@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class ArgValidatorTest {
 
-//    @Test
+    @Test
     public void testCal() {
 
         //        String s = "~ ( T &  ~ T )";
@@ -18,7 +18,7 @@ public class ArgValidatorTest {
 
     }
 
-    //    @Test
+    @Test
     public void testBoolExpression() {
 
         Expression exp = new Expression("(A v B) -> ~(B v C)");
@@ -42,9 +42,9 @@ public class ArgValidatorTest {
 
     }
 
-    //    @Test
+    @Test
     public void testAss5Q1() {
-        System.out.println("===in test arg===\n\n");
+        
         Argument arg = new Argument();
 
         arg.addPremise(new Expression("(A & B) -> ~C"));
@@ -54,12 +54,12 @@ public class ArgValidatorTest {
 
         arg.printTruthTable();
 
-        System.out.println("\n\n===in test arg===\n\n");
+
     }
 
-    //    @Test
+    @Test
     public void testAss5Q2() {
-        System.out.println("===in test arg===\n\n");
+        
         Argument arg = new Argument();
 
         arg.addPremise(new Expression("(R v S) -> ~(U & V)"));
@@ -70,12 +70,12 @@ public class ArgValidatorTest {
 
         arg.printTruthTable();
 
-        System.out.println("\n\n===in test arg===\n\n");
+
     }
 
-    //    @Test
+    @Test
     public void testAss5Q3() {
-        System.out.println("===in test arg===\n\n");
+        
         Argument arg = new Argument();
 
         arg.addPremise(new Expression("S -> (N v H)"));
@@ -85,12 +85,12 @@ public class ArgValidatorTest {
 
         arg.printTruthTable();
 
-        System.out.println("\n\n===in test arg===\n\n");
+
     }
 
-    //    @Test
+    @Test
     public void testAss5Q4() {
-        System.out.println("===in test arg===\n\n");
+        
         Argument arg = new Argument();
 
         arg.addPremise(new Expression("A->(B&C)"));
@@ -100,13 +100,12 @@ public class ArgValidatorTest {
 
         arg.printTruthTable();
 
-        System.out.println("\n\n===in test arg===\n\n");
+
     }
 
 
-    //    @Test
+    @Test
     public void testAss5Q5() {
-        System.out.println("===in test arg===\n\n");
 
         Argument arg = new Argument();
 
@@ -116,17 +115,15 @@ public class ArgValidatorTest {
         arg.printArgument();
 
         arg.printTruthTable();
-
-        System.out.println("\n\n===in test arg===\n\n");
+        
     }
 
     @Test
     public void testAss5Q6() {
-        System.out.println("===in test arg===\n\n");
 
         Argument arg = new Argument();
 
-        arg.addPremise(new Expression("(M |  ~E) ->D"));
+        arg.addPremise(new Expression("(M | ~E) ->D"));
         arg.addPremise(new Expression("~E -> ~M"));
         arg.addPremise(new Expression("M -> ~E"));
         arg.setConclusion(new Expression("D"));
@@ -134,12 +131,10 @@ public class ArgValidatorTest {
 
         arg.printTruthTable();
 
-        System.out.println("\n\n===in test arg===\n\n");
     }
 
-    //    @Test
+    @Test
     public void testAss5Q8() {
-        System.out.println("===in test arg===\n\n");
 
         Argument arg = new Argument();
 
@@ -151,6 +146,24 @@ public class ArgValidatorTest {
 
         arg.printTruthTable();
 
-        System.out.println("\n\n===in test arg===\n\n");
     }
+
+
+    // Assignment 6
+    @Test
+    public void testAss6Q1() {
+        
+        Argument arg = new Argument();
+
+        arg.addPremise(new Expression("(K & ~C) -> ~(P & R)"));
+        arg.addPremise(new Expression("J -> (K & P)"));
+        arg.addPremise(new Expression("A -> (P & R)"));
+        arg.setConclusion(new Expression("(A & J) -> C"));
+        arg.printArgument();
+
+        arg.printTruthTable();
+
+
+    }
+
 }

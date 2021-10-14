@@ -66,22 +66,24 @@ public class Argument {
         this.conclusion.restore();
     }
 
-    public void calculate() {
+    public Boolean[] calculateRow() {
 
-        for (Expression p : this.premiseList)
-            System.out.print(p.calculate() + ", ");
+        List<Boolean> result = new ArrayList<>();
 
+        for (Expression p : this.premiseList){
+            result.add(p.calculate());
+        }
 
-        System.out.println("| " + this.conclusion.calculate());
+        result.add(this.conclusion.calculate());
+        return result.toArray(new Boolean[0]);
     }
 
-
     public void printTruthTable() {
-        getAllSymbols();
-        List<String> symbolList = new ArrayList<>();
-        for (String s : symbolSet)
-            symbolList.add(s);
 
+        //get all symbols and sort in alphabetic order
+        getAllSymbols();
+
+        List<String> symbolList = new ArrayList<>(symbolSet);
 
         char[] symbolCharArray = String.join("", symbolList).toCharArray();
         Arrays.sort(symbolCharArray);
@@ -91,223 +93,74 @@ public class Argument {
         for (char c : symbolCharArray)
             symbolList.add(Character.toString(c));
 
-//       Debugger.log(symbolList.toString());
+        Debugger.log(symbolList.toString());
 
-        if (symbolList.size() == 2) {
-            restore();
-            System.out.print("line 1: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), true);
-            calculate();
+        //print truth table
+        int colSize = symbolList.size();
+        int rowSize = (int) Math.pow(2, symbolList.size());
+        boolean flipIndicator = false; // initial value is True.
+        int sectionSize = rowSize / 2; // initial the size of the first.
 
-            restore();
-            System.out.print("line 2: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), false);
-            calculate();
+        Debugger.log("row size: " + rowSize);
+        Debugger.log("col size: " + colSize);
+        Debugger.log("section size: " + sectionSize);
 
-            restore();
-            System.out.print("line 3: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), true);
-            calculate();
+        Boolean[][] truthValues = new Boolean[rowSize][colSize];
+        Boolean[][] resultValues = new Boolean[rowSize][premiseList.size() + 1]; // size = num of premises + conclusion
 
-            restore();
-            System.out.print("line 4: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), false);
-            calculate();
+        // generate truth value table
+        for (int col = 0; col < colSize; col++) {
+            for (int row = 0; row < rowSize; row++) {
 
-        } else if (symbolList.size() == 3) {
+                if (row % sectionSize == 0) //flip the truth value indicator per section
+                    flipIndicator = !flipIndicator;
 
-            restore();
-            System.out.print("line 1: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), true);
-            calculate();
+                truthValues[row][col] = flipIndicator; // set the truth value
+            }
 
-            restore();
-            System.out.print("line 2: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), false);
-            calculate();
-
-            restore();
-            System.out.print("line 3: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), true);
-            calculate();
-
-            restore();
-            System.out.print("line 4: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), false);
-            calculate();
-
-            restore();
-            System.out.print("line 5: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), true);
-            calculate();
-
-            restore();
-            System.out.print("line 6: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), false);
-            calculate();
-
-            restore();
-            System.out.print("line 7: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), true);
-            calculate();
-
-            restore();
-            System.out.print("line 8: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), false);
-            calculate();
-
-        } else if (symbolList.size() == 4) {
-
-            restore();
-            System.out.print("line 1: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.print("line 2: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), false);
-            calculate();
-
-            restore();
-            System.out.print("line 3: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.print("line 4: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), false);
-            calculate();
-
-            restore();
-            System.out.print("line 5: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.print("line 6: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), false);
-            calculate();
-
-            restore();
-            System.out.print("line 7: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.print("line 8: ");
-            assign(symbolList.get(0), true);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), false);
-            calculate();
-
-            restore();
-            System.out.print("line 9: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.print("line 10: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), false);
-            calculate();
-
-            restore();
-            System.out.print("line 11: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.print("line 12: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), true);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), false);
-            calculate();
-
-            restore();
-            System.out.print("line 13: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.print("line 14: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), true);
-            assign(symbolList.get(3), false);
-            calculate();
-
-            restore();
-            System.out.print("line 15: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), true);
-            calculate();
-
-            restore();
-            System.out.println("line 16: ");
-            assign(symbolList.get(0), false);
-            assign(symbolList.get(1), false);
-            assign(symbolList.get(2), false);
-            assign(symbolList.get(3), false);
-            calculate();
+            flipIndicator = false; // reset indicator for each col.
+            sectionSize = sectionSize / 2; // re-calculate the size of the section for that col.
         }
 
+        //print out truth table header
+        System.out.print(String.format("Truth Table:\n%5s\t",""));
+        for (int i = 0; i < symbolList.size(); i++) {
+            System.out.print(String.format("%6s\t", symbolList.get(i)));
+        }
+        for (int i = 0; i < premiseList.size(); i++) {
+            System.out.print(String.format("%15s\t", premiseList.get(i)));
+        }
+
+        System.out.println(String.format("%15s\t", this.conclusion));
+
+        //print out truth table body
+        for (int row = 0; row < rowSize; row++) {
+
+            restore();
+
+            System.out.print(String.format("%5s:\t", row + 1));
+
+            for (int col = 0; col < colSize; col++) {
+
+                System.out.print(String.format("%6s\t", truthValues[row][col]));
+
+                assign(symbolList.get(col), truthValues[row][col]);
+
+            }
+
+            Boolean[] resultRow = calculateRow();
+
+            for (int i = 0; i < resultRow.length; i++){
+                System.out.print(String.format("%15s\t", resultRow[i]));
+            }
+
+            System.out.println();
+
+        }
+
+
     }
+
 
     public String toString(boolean option) {
         StringBuilder sb = new StringBuilder();
