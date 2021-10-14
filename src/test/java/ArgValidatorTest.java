@@ -1,10 +1,13 @@
 import argVal.model.Argument;
 import argVal.model.Expression;
-import argVal.model.Symbol;
-import argVal.model.calculator.BoolExpCalculator;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 public class ArgValidatorTest {
+
+    @Rule
+    public TestName name = new TestName();
 
     @Test
     public void testCal() {
@@ -52,7 +55,7 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("~(A & (~B & C))"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        arg.generateTruthTable();
 
 
     }
@@ -68,7 +71,7 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("(V v R) -> ~(S & U)"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        arg.generateTruthTable();
 
 
     }
@@ -83,7 +86,7 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("S -> H"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        arg.generateTruthTable();
 
 
     }
@@ -98,7 +101,7 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("~A"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        arg.generateTruthTable();
 
 
     }
@@ -114,7 +117,7 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("~S & (V v P)"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        arg.generateTruthTable();
         
     }
 
@@ -129,7 +132,7 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("D"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        arg.generateTruthTable();
 
     }
 
@@ -144,15 +147,16 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("C & ~A"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        arg.generateTruthTable();
 
     }
 
 
     // Assignment 6
     @Test
-    public void testAss6Q1() {
-        
+    public void testA6Q1() {
+        System.out.println("Test Method Name: " + name.getMethodName());
+
         Argument arg = new Argument();
 
         arg.addPremise(new Expression("(K & ~C) -> ~(P & R)"));
@@ -161,9 +165,90 @@ public class ArgValidatorTest {
         arg.setConclusion(new Expression("(A & J) -> C"));
         arg.printArgument();
 
-        arg.printTruthTable();
+        int isValid = arg.generateTruthTable();
+        System.out.println("is valid argument: " + isValid);
+    }
 
+    @Test
+    public void testA6Q2() {
+        System.out.println("Test Method Name: " + name.getMethodName());
 
+        Argument arg = new Argument();
+
+        arg.addPremise(new Expression("E -> J"));
+        arg.addPremise(new Expression("B -> Q"));
+        arg.addPremise(new Expression("D -> (J & ~Q)"));
+        arg.setConclusion(new Expression("(E & B) -> D"));
+        arg.printArgument();
+
+        int isValid = arg.generateTruthTable();
+        System.out.println("is valid argument: " + isValid);
+    }
+
+    @Test
+    public void testA6Q3() {
+        System.out.println("Test Method Name: " + name.getMethodName());
+
+        Argument arg = new Argument();
+
+        arg.addPremise(new Expression("~S -> ~(Q v G)"));
+        arg.addPremise(new Expression("(Q v S) & (G v ~N)"));
+        arg.addPremise(new Expression("(N v ~S) -> L"));
+        arg.setConclusion(new Expression("S & ~N"));
+        arg.printArgument();
+
+        int isValid = arg.generateTruthTable();
+        System.out.println("is valid argument: " + isValid);
+    }
+
+    @Test
+    public void testA6Q4() {
+        System.out.println("Test Method Name: " + name.getMethodName());
+
+        Argument arg = new Argument();
+
+        arg.addPremise(new Expression("R -> (M v ~C)"));
+        arg.addPremise(new Expression("(P v U) -> C"));
+        arg.addPremise(new Expression("M -> ~P"));
+        arg.addPremise(new Expression("R -> U"));
+        arg.setConclusion(new Expression(" (M & U) v ~R"));
+        arg.printArgument();
+
+        int isValid = arg.generateTruthTable();
+        System.out.println("is valid argument: " + isValid);
+    }
+
+    @Test
+    public void testA6Q5() {
+        System.out.println("Test Method Name: " + name.getMethodName());
+
+        Argument arg = new Argument();
+
+        arg.addPremise(new Expression("(E & ~R) -> J"));
+        arg.addPremise(new Expression("~J & E"));
+        arg.addPremise(new Expression("R -> (J v M)"));
+        arg.setConclusion(new Expression("E | ~M"));
+        arg.printArgument();
+
+        int isValid = arg.generateTruthTable();
+        System.out.println("is valid argument: " + isValid);
+    }
+
+    @Test
+    public void testA6Q6() {
+        System.out.println("Test Method Name: " + name.getMethodName());
+
+        Argument arg = new Argument();
+
+        arg.addPremise(new Expression("~S | (B &E)"));
+        arg.addPremise(new Expression("~S->M"));
+        arg.addPremise(new Expression("E->(H|D)"));
+        arg.addPremise(new Expression("~M&~D"));
+        arg.setConclusion(new Expression("H"));
+        arg.printArgument();
+
+        int isValid = arg.generateTruthTable();
+        System.out.println("is valid argument: " + isValid);
     }
 
 }

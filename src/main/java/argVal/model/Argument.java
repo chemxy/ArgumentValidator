@@ -78,7 +78,13 @@ public class Argument {
         return result.toArray(new Boolean[0]);
     }
 
-    public void printTruthTable() {
+    /**
+     * print out truth table for the argument and return if the argument is valid.
+     * @return
+     */
+    public int generateTruthTable() {
+
+        int isValid = -1; // return -1 if the argument is valid.
 
         //get all symbols and sort in alphabetic order
         getAllSymbols();
@@ -124,9 +130,11 @@ public class Argument {
 
         //print out truth table header
         System.out.print(String.format("Truth Table:\n%5s\t",""));
+
         for (int i = 0; i < symbolList.size(); i++) {
             System.out.print(String.format("%6s\t", symbolList.get(i)));
         }
+
         for (int i = 0; i < premiseList.size(); i++) {
             System.out.print(String.format("%15s\t", premiseList.get(i)));
         }
@@ -136,29 +144,40 @@ public class Argument {
         //print out truth table body
         for (int row = 0; row < rowSize; row++) {
 
-            restore();
+            restore(); // reset the truth value for each variable
 
-            System.out.print(String.format("%5s:\t", row + 1));
+            System.out.print(String.format("%5s:\t", row + 1)); // print line indicator
 
-            for (int col = 0; col < colSize; col++) {
+            for (int col = 0; col < colSize; col++) { // print truth values for variables
 
                 System.out.print(String.format("%6s\t", truthValues[row][col]));
 
-                assign(symbolList.get(col), truthValues[row][col]);
+                assign(symbolList.get(col), truthValues[row][col]); // assign truth values of variables to premises and conclusion
 
             }
 
-            Boolean[] resultRow = calculateRow();
+            Boolean[] resultRow = calculateRow(); // calculate te truth values of premises and conclusion
 
-            for (int i = 0; i < resultRow.length; i++){
+            boolean isPremisesTrue = true; // initial value for premise
+            boolean isConclusionTrue = true; // initial value for conclusion
+            for (int i = 0; i < resultRow.length; i++){ // print truth values for premises and conclusion
                 System.out.print(String.format("%15s\t", resultRow[i]));
             }
 
-            System.out.println();
+            System.out.println(); // print a new line
 
+            // determine if a TT/F pattern exists in one of the rows.
+            for (int i = 0; i < resultRow.length - 1; i++){
+                isPremisesTrue = isPremisesTrue && resultRow[i];
+            }
+
+            isConclusionTrue = isConclusionTrue && resultRow[resultRow.length - 1];
+
+            if(isPremisesTrue && !isConclusionTrue)
+                isValid = row + 1; // indicate the row number which make the argument invalid.
         }
 
-
+        return isValid;
     }
 
 
