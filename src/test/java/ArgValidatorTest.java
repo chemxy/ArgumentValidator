@@ -227,7 +227,7 @@ public class ArgValidatorTest {
         arg.addPremise(new Expression("(E & ~R) -> J"));
         arg.addPremise(new Expression("~J & E"));
         arg.addPremise(new Expression("R -> (J v M)"));
-        arg.setConclusion(new Expression("E | ~M"));
+        arg.setConclusion(new Expression("~ (E v M)"));
         arg.printArgument();
 
         int isValid = arg.generateTruthTable();
